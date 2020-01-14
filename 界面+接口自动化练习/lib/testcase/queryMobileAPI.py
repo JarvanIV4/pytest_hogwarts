@@ -1,4 +1,4 @@
-from python_test.gitee.common.interface.HttpAPI import HttpAPI
+from common.interface.HttpAPI import HttpAPI
 
 
 class queryMobileAPI(HttpAPI):
