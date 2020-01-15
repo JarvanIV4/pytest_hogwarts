@@ -3,7 +3,9 @@ import pymysql
 import logging
 import operator       # 运算符模块
 
+
 class DatabaseTool:
+    """数据库公共方法"""
 
     def connect_to_db(self, db_info):
         """
@@ -14,7 +16,7 @@ class DatabaseTool:
         logging.info("正在连接数据库")
         if db_info['数据库类型'].lower() == 'oracle':
             dsn = cx_Oracle.makedsn(db_info['host'], 1521, service_name=db_info['service_name'])
-            self.database = cs_Oracle(db_info['用户名'], db_info['密码'], dsn=dsn, encoding='utf-8', nendogind='utf-8')
+            self.database = cx_Oracle(db_info['用户名'], db_info['密码'], dsn=dsn, encoding='utf-8', nendogind='utf-8')
         return self.database
 
     def disconnect_to_db(self):
@@ -57,6 +59,28 @@ class DatabaseTool:
         sql = ("select * from %s.%s where" + "and".join(query_option))
         sql = sql.strip()[:3] if sql.strip()[:-3] == "and" else sql.strip()
         return len(self.query_sql(sql, 'dict'))
+
+    def get_desc_info(self, filename, hostname):
+        """
+        获取指定数据库表的字段描述信息
+        :param filename: str 表名
+        :param hostname: dict 数据库信息
+        :return: None or 包含字段名+字段描述的字典
+        """
+        if filename in self.__table_desc_info_set:
+            return self.__table_desc_info_set.get(filename)
+        database, table = filename.split(".")
+        sql = {
+            "SELECT COLUMN_NAME, COMMENTS FROM ALL_COL_COMMENTS "
+            "WHERE OWNER='{0}' AND TABLE_NAME='{1}'"
+        }.format(database, table)
+        res = self.query_sql(sql)
+        if not res:
+            return None
+        result = OrderedDict()
+        result.update(((x.items()[0][1], x.items()[1][1]) for x in res))
+        self.__table_desc_info_set[filename] = result
+        return result
 
     def query_result_list(self, query_result):
         """

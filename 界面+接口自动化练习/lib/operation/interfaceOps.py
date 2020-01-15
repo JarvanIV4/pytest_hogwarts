@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from common.interface.HttpAPI import HttpAPI
-from config.interface_config import queryMobileConfig as qmc
+from config.interface import queryMobileConfig as qmc
 
 
 class queryInfo(HttpAPI):
