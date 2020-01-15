@@ -30,7 +30,7 @@ def addCSV(dics):
     date = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month)
     path = "biliCount-" + date + ".csv"
 
-    data = pd.read_csv(path, encoding='utf-8',error_bad_lines=False)
+    data = pd.read_csv(path, encoding='utf-8', error_bad_lines=False, delimiter="\t", engine='python')
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     backtoday = str(datetime.datetime.now().year) + '/' + str(datetime.datetime.now().month) + '/' + str(
         datetime.datetime.now().day)
