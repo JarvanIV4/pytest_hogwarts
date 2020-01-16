@@ -1,0 +1,12 @@
+http://baozoumanhua.com/all/hot/page/%s?sv=1389537379
+img-wrap
+http://www.qiushibaike.com/8hr/page/%s?s=4632069
+thumb
+http://www.qiushibaike.info/page/%s
+PhotoSetPost
+
+
+
+#注意，把RUL写在本txt第一行，页码用%s代替，第二行是div的class值
+
+123456789
