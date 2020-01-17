@@ -9,6 +9,17 @@ class IndexQuery(InterfaceOps):
         super().__init__()
         Iqc.settings["Cookie"] = self.get_loginCookie(user)
 
+    def index_query_main(self, benchmark_code="", benchmark_name="", data_start_dt="", data_end_dt=""):
+        """
+        指数查询主方法
+        :param benchmark_code: 指数代码
+        :param benchmark_name: 指数名称
+        :param data_start_dt: 开始时间
+        :param data_end_dt: 结束时间
+        """
+        response = self.index_query(benchmark_code, benchmark_name, data_start_dt, data_end_dt)
+        assert self.index_data_check(response)
+
     def index_query(self, benchmark_code="", benchmark_name="", data_start_dt="", data_end_dt=""):
         """
         指数查询
@@ -102,5 +113,16 @@ class IndexQuery(InterfaceOps):
             print("全部数据比对结束-部分数据错误")
         self.log.info(flag)
         return flag
+
+    def index_query_check(self, response):
+        self.connect_gaas_db() # 连接数据库
+        count_flag = self.index_count_check(response)  # 检查接口响应报文.count
+        if count_flag:
+            status_flag = self.index_status_check(response)  #检查接口响应报文.status
+            data_flag = self.index_data_check(response)     #检查接口响应报文.data
+            return status_flag and count_flag and data_flag
+        else:
+            return False  # 若记录数不正确则直接返回False
+
 
 

@@ -2,6 +2,7 @@
 from common.interface.HttpAPI import HttpAPI
 from config.interface import query_mobile_conf as qmc
 from common.database.DatabaseTool import DatabaseTool
+from config.database import db_config
 from common.log.Log import Log
 from config.Config import PathConfig
 import re
@@ -12,6 +13,9 @@ class InterfaceOps(HttpAPI, DatabaseTool):
     def __init__(self):
         super().__init__()
         self.log = Log(PathConfig.log_path)
+
+    def connect_gaas_db(self, db_info=db_config.pbot_db_st):
+        self.connect_to_db(db_info)
 
     def login_sys_api(self, user="用户1", login_url="ST"):
         if login_url == "ST":
