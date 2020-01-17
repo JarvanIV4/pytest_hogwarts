@@ -73,7 +73,7 @@ class IndexQuery(InterfaceOps):
         for resp in response:
             self.log.info("\n正在比对第%d组数据"%(j+1))
             benchmark_code_resp = resp["benchmarkCode"] # 接口响应报文中的指数代码
-            sql = "SELECT * FROM GAAS.PRO_BENCHARKS WHERE 1=1 AND BENCHARK_CODE='%s'"%benchmark_code_resp
+            sql = "SELECT * FROM GAAS.PRO_BENCHARKS WHERE 1=1 AND BENCHARK_CODE='%s'" % benchmark_code_resp
             self.log.info(sql)
             result_db = (self.query_sql(sql, "dict"))[0]
             for i in range(len(response_key)):
