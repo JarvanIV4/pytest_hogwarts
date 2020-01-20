@@ -1,0 +1,4 @@
+$x('//span[contains(text(),"查询"]')
+
+//span[contains(@id, "btnlnnerEI")]
+//span[contains(text(),"前端改造"]/../img
