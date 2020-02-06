@@ -16,7 +16,7 @@ print(string_test1(str1))
 def string_test2(str1):
     new_str = ""
     for i in str1:
-        if i.isdigit():
+        if i.isdigit():     # 判断字符串是否为数字
             new_str += i
     print(new_str)
     return new_str

@@ -39,7 +39,7 @@ class auto_email():
             print(e)
 if __name__ == '__main__':
     ae = auto_email()  #创建类的对象
-    report = r"D:\python_work\auto_test\report\AutoTest2019-01-21_20-36-02_05 list_dict_test.html"
+    report = r"D:\python_work\auto_test\report\AutoTest2019-01-21_20-36-02_04 list_dict_test.html"
     ae.send_email(report)  #调用发送邮件的方法，传入参数为路径+文件名
 
     #535错误：邮箱登录，认证失败，授权码与登录用户名不符

@@ -16,7 +16,6 @@ def list_map(list1,list2):
                 target_dict[num]=string
                 break
     return target_dict
-
 list1=[4,7,2,5,9]
 list2=["f","43","f2","fgde32e","4322","34aasdasa"]
 print(list_map(list1,list2))
