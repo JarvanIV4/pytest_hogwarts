@@ -2,7 +2,7 @@
 # https://www.cnblogs.com/wkfvawl/p/9487165.html#_label3
 import jieba
 
-text = open('./三国演义.txt',"r",encoding='utf-8').read()
+text = open('三国演义.txt', "r", encoding='utf-8').read()
 words = jieba.lcut(text)
 counts = {}
 for word in words:
