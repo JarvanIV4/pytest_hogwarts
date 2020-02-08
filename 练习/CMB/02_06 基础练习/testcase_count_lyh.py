@@ -18,7 +18,8 @@ class TestCaseInfo():
         start_date=self.__satrt_date(current_date)
         for execute_record in execute_records:
             execute_date=execute_record["执行时间"]
-            #print(start_date,current_date)
+            # print(start_date,current_date)
+            print(execute_record)
             if start_date<=execute_date and execute_date<=current_date:
                 execute_results=execute_record["执行结果"]
                 for execute_result in execute_results:
