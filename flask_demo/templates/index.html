@@ -14,7 +14,13 @@
 {{my_dict.url}}<br>
 <hr>
 {%for num in my_list%}
-    {{num}}<br>
+    {%if num > 3 %}
+        {{num}}<br>
+    {%endif%}
 {% endfor %}
+<hr>
+{{url_str | upper}}<br>
+{{url_str | reverse}}<br>
+{{url_str | upper | reverse | lower | upper}}<br>
 </body>
 </html>
