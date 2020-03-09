@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form method="post">
+    <lable>用户名:</lable><input type="text" name="username"><br>
+    <lable>密码:</lable><input type="password" name="password"><br>
+    <lable>确认密码:</lable><input type="password" name="password2"><br>
+    <input type="submit" value="提交"><br>
+    {% for message in get_flashed_messages() %}
+        {{message}}
+    {% endfor %}
+</form>
+<hr>
+<form method="post">
+    {{login_form.csrf_token()}}
+    {{login_form.username.label}}{{login_form.username}}<br>
+    {{login_form.password.label}}{{login_form.password}}<br>
+    {{login_form.password2.label}}{{login_form.password2}}<br>
+    {{login_form.submit}}<br>
+</form>
+</body>
+</html>
