@@ -1,7 +1,10 @@
-if "" and True:
-    print("True")
-else:
-    print("Flase")
+# -*- coding: utf-8 -*-
+# @Time : 2020/03/10
+# @Author : Wind
 
-my_list = [1, 3, 5, 7, 9]
-print(my_list)
+s = 'EROUOHIGVDSFBSBDHFKHKJSN;LDFDIUGUHBIAEAWRVBLBV'
+for i in range(len(s)-2):
+    l = ''
+    if s[i] == s[i+2]:
+        l = s[i]+s[i+1]+s[i+2]
+        print(l)
