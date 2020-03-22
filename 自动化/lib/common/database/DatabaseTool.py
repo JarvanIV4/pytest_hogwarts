@@ -39,18 +39,17 @@ class DatabaseTool:
         查询数据库
         :param sql: 查询SQL语句
         :param return_type: 返回类型-元组('tuple')或字典('dict')
-        :return:
+        :return: result:数据库查询结果
         """
         try:
             self.cursor = self.database.cursor()
-            logging.info("查询SQL: " + sql)
-            cursor = self.cursor.execute(sql)
+            self.cursor.execute(sql)
             if return_type == 'tuple':
                 result = self.cursor.fetchall()
                 return result
-            if return_type == 'dict':   # 将查询结果转换为字段
-                columns = [i[0] for i in cursor.description]
-                result = [dict(zip(columns, row)) for row in cursor]
+            if return_type == 'dict':   # 将查询结果转换为字典
+                columns = [desc[0] for desc in self.cursor.description]
+                result = [dict(zip(columns, row)) for row in self.cursor]
                 return result
         except:
             self.database.rollback()
@@ -122,4 +121,4 @@ if __name__ == '__main__':
     db = DatabaseTool()
     db.connect_to_db(PBOT_DB_ST)
     sql = "select * from "
-    db.query_sql(sql)
+    db.query_sql(sql, 'dict')
