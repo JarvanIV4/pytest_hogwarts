@@ -45,9 +45,7 @@ class DatebaseXls:
                     if (len(str(desc[row][col])) * 367) > sheet.col(col).width:
                         sheet.col(col).width = (len(desc[row][col]) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
-
-            filename = excel_name + '.xls'  # 定义Excel名字
-            wbk.save(filename)  # 保存Excel
+            wbk.save(excel_name + '.xls')  # 保存Excel
         print("数据库表保存成功，共{}张表".format(len(tables)))
         db.disconnect_to_db()
 
