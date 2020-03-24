@@ -24,7 +24,8 @@ class DatebaseXls:
                   "where table_schema='{0}' and table_name='{1}'".format(db_name,table_name)
             table_comment = (db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
             # print(table_comment)
-            sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的第一个sheet，cell_overwrite_ok=True
+            sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的第一个sheet
+            # add_sheet方法第二个入参cell_overwrite_ok=True
             # 写入第一行：数据表名+注释
             table_name_style = xlwt.XFStyle()  # 初始化样式
             table_name_style.font.bold = True   # 黑体
@@ -45,9 +46,7 @@ class DatebaseXls:
                     if (len(str(desc[row][col])) * 367) > sheet.col(col).width:
                         sheet.col(col).width = (len(desc[row][col]) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
-
-            filename = excel_name + '.xls'  # 定义Excel名字
-            wbk.save(filename)  # 保存Excel
+            wbk.save(excel_name + '.xls')  # 保存Excel
         print("数据库表保存成功，共{}张表".format(len(tables)))
         db.disconnect_to_db()
 
