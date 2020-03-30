@@ -56,7 +56,7 @@ class MysqlTools:
     def connect_mysql(self, host, user, passwd, db=None):
         """
         连接Mysql数据库
-        :param host: 主机IP地址
+        :param host: 数据库服务器IP地址
         :param user: 用户名
         :param passwd: 密码
         :param db: 数据库
