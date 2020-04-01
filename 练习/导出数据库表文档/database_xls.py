@@ -145,7 +145,7 @@ class MysqlTools:
         sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE table_schema='%s'" % db_name
         tables_name = self.query_sql(sql)
         tables_count = self.query_count(sql)
-        print(tables_count)
+        print("{0}数据库中共{1}张表".format(db_name, tables_count))
         tables_name_list = []
         for table in tables_name:
             tables_name_list.append(table[0])
