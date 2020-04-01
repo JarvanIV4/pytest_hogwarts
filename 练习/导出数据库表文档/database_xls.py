@@ -64,11 +64,11 @@ class MysqlTools:
         # 连接数据库
         self.connect = pymysql.connect(host=host, port=3306, user=user, passwd=passwd, db=db, charset='utf8')
         if self.connect.open:
-            print("连接数据库{0}成功".format(db))
+            print("数据库连接成功")
             self.cursor = self.connect.cursor()  # 使用cursor方法创建一个游标
             return self.connect, self.cursor
         else:
-            print("连接数据库{0}失败".format(db))
+            print("数据库连接失败")
 
     def execute_sql(self, sql):
         """
