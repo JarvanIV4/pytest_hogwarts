@@ -7,6 +7,13 @@ import xlwt
 
 class DatebaseXls:
 
+    def dbx_main(self, excel_name, db_name='bxqqedu'):
+        db = MysqlTools()
+        db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
+        tables = db.query_table_name(db_name)
+        self.db_to_excel(excel_name, db_name, tables)
+
+
     def db_to_excel(self, excel_name, db_name, tables):
         """
         查询数据库信息生成Excel
@@ -17,13 +24,17 @@ class DatebaseXls:
         db = MysqlTools()
         db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
         wbk = xlwt.Workbook()  # 实例化一个Excel
+        tables_comment = []  # 全部表名
+        i = 0
         for table_name in tables:
-            desc = db.query_table_info(db_name, table_name)
+            desc = db.query_table_info(db_name, table_name)     # 查询数据库表名
             columns = ["序号", "列名", "数据类型", "字段类型", "长度", "是否为空", "默认值", "备注"]  # 表头字段
             sql = "select table_name 表名,table_comment 注释 from information_schema.tables " \
-                  "where table_schema='{0}' and table_name='{1}'".format(db_name,table_name)
+                  "where table_schema='{0}' and table_name='{1}'".format(db_name, table_name)
             table_comment = (db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
-            # print(table_comment)
+            if table_comment in tables_comment or table_comment == '':     # 判断如果没有重复表就则写入Excel
+                continue
+            tables_comment.append(table_comment)
             sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的第一个sheet
             # add_sheet方法第二个入参cell_overwrite_ok=True
             # 写入第一行：数据表名+注释
@@ -47,7 +58,8 @@ class DatebaseXls:
                         sheet.col(col).width = (len(desc[row][col]) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
             wbk.save(excel_name + '.xls')  # 保存Excel
-        print("数据库表保存成功，共{}张表".format(len(tables)))
+            i += 1
+        print("数据库表保存成功，共{}张表".format(i))
         db.disconnect_db()
 
 
@@ -98,7 +110,7 @@ class MysqlTools:
         :return: result: 查询结果
         """
         try:
-            print(sql)
+            # print(sql)
             self.cursor.execute(sql)
             if return_type == 'tuple':
                 result = self.cursor.fetchall()
@@ -153,31 +165,8 @@ class MysqlTools:
 
 
 if __name__ == '__main__':
-    # tables = ['t_sc_app_banner', 't_sc_app_version', 't_sc_appointment', 't_sc_appointment_auditor', 't_sc_user', 't_sc_class']
-    tables = ['t_sc_app_banner', 't_sc_app_version', 't_sc_appointment', 't_sc_appointment_auditor', 't_sc_appointment_visitor',
-              't_sc_apprasia_student', 't_sc_apprasia_teacher', 't_sc_arrange_rule', 't_sc_assets', 't_sc_assets_apply_repair_record',
-              't_sc_assets_category', 't_sc_assets_custom_attribute_value', 't_sc_assets_operate_record', 't_sc_assets_sources',
-              't_sc_building_device', 't_sc_class', 't_sc_classroom', 't_sc_classroom_type', 't_sc_course_arrange',
-              't_sc_course_management', 't_sc_course_prepare', 't_sc_course_segment', 't_sc_course_type', 't_sc_data_dict',
-              't_sc_database_attribute', 't_sc_department', 't_sc_device', 't_sc_device_category', 't_sc_dormitory',
-              't_sc_dormitory_bed', 't_sc_dormitory_building', 't_sc_dormitory_floor', 't_sc_duties', 't_sc_exam',
-              't_sc_exam_answer', 't_sc_exam_paper', 't_sc_exam_paper_questions', 't_sc_exam_record', 't_sc_exam_staff',
-              't_sc_famous_teacher', 't_sc_feedback', 't_sc_guardian', 't_sc_helpcenter', 't_sc_invitation', 't_sc_leave',
-              't_sc_leave_approve_copyto_person', 't_sc_leave_approve_person', 't_sc_leave_condition',
-              't_sc_leave_condition_initiator', 't_sc_leave_condition_type', 't_sc_leave_type', 't_sc_major',
-              't_sc_notification', 't_sc_notification_read', 't_sc_online_course', 't_sc_online_course_chapter',
-              't_sc_online_course_comment', 't_sc_online_course_like', 't_sc_online_course_major', 't_sc_online_course_post',
-              't_sc_online_course_seg', 't_sc_order', 't_sc_party', 't_sc_permission', 't_sc_person_photo', 't_sc_prepare',
-              't_sc_public_roster', 't_sc_push_target', 't_sc_question', 't_sc_question_bank', 't_sc_question_bank_question',
-              't_sc_question_bank_type', 't_sc_question_option', 't_sc_related_exam_paper', 't_sc_related_exam_paper_questions',
-              't_sc_related_question', 't_sc_related_question_option', 't_sc_role', 't_sc_role_permission', 't_sc_school',
-              't_sc_school_config', 't_sc_school_level', 't_sc_scores', 't_sc_scores_student', 't_sc_section', 't_sc_segment_staff',
-              't_sc_semester', 't_sc_staff', 't_sc_student', 't_sc_tag', 't_sc_teacher_feedback', 't_sc_teacher_qualifications',
-              't_sc_teacher_work_experience', 't_sc_teaching_building', 't_sc_timetable_template', 't_sc_user', 't_sc_user_role']
+    t = DatebaseXls()
+    t.dbx_main('数据库设计文档 V1.0')
 
-    # t = DatebaseXls()
-    # t.db_to_excel('数据库设计文档 V1.0', 'bxqqedu', tables)
-    db = MysqlTools()
-    db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928')
-    print(db.query_table_name('bxqqedu'))
+
 
