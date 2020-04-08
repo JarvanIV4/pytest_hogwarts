@@ -11,7 +11,7 @@ class DatebaseXls:
         db = MysqlTools()
         db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
         tables = db.query_table_name(db_name)
-        self.db_to_excel(excel_name, db_name, tables)
+        self.db_to_excel(excel_name, db_name, ['t_sc_online_course'])
 
 
     def db_to_excel(self, excel_name, db_name, tables):
@@ -56,7 +56,7 @@ class DatebaseXls:
                 for col in range(len(columns)):
                     # (Modify column width to match biggest data in that column)
                     if (len(str(desc[row][col])) * 367) > sheet.col(col).width:
-                        # print(desc[row][col])
+                        print(desc[row][col])
                         sheet.col(col).width = (len(str(desc[row][col])) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
             wbk.save(excel_name + '.xls')  # 保存Excel
