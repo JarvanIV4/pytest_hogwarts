@@ -7,14 +7,12 @@ import xlwt
 
 class DatebaseXls:
 
-    def dbx_main(self, excel_name, db_name='bxqqedu', tables=None):
-        """
-        生成数据库文档-主方法
-        :param excel_name: Excel表名称
-        :param db_name: 数据库名称，默认bxqqedu
-        :param tables: 需要生成的数据库表名（列表）,默认生成所有表
-        """
-        self.db_to_excel(excel_name, db_name, tables)
+    def dbx_main(self, excel_name, db_name='bxqqedu'):
+        db = MysqlTools()
+        db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
+        tables = db.query_table_name(db_name)
+        self.db_to_excel(excel_name, db_name, ['t_sc_online_course'])
+
 
     def db_to_excel(self, excel_name, db_name, tables):
         """
@@ -25,8 +23,6 @@ class DatebaseXls:
         """
         db = MysqlTools()
         db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
-        if tables is None:  # 判断如果为None则插入所有的数据库表
-            tables = db.query_table_name(db_name)
         wbk = xlwt.Workbook()  # 实例化一个Excel
         tables_comment = []  # 全部表名
         i = 0
@@ -36,7 +32,8 @@ class DatebaseXls:
             sql = "select table_name 表名,table_comment 注释 from information_schema.tables " \
                   "where table_schema='{0}' and table_name='{1}'".format(db_name, table_name)
             table_comment = (db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
-            if table_comment in tables_comment or table_comment == '':     # 判断如果没有重复表或表名注释不为空就则写入Excel
+            # print(table_comment)
+            if table_comment in tables_comment or table_comment == '':     # 判断如果没有重复表就则写入Excel
                 continue
             tables_comment.append(table_comment)
             sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的第一个sheet
@@ -59,7 +56,7 @@ class DatebaseXls:
                 for col in range(len(columns)):
                     # (Modify column width to match biggest data in that column)
                     if (len(str(desc[row][col])) * 367) > sheet.col(col).width:
-                        # print(desc[row][col])
+                        print(desc[row][col])
                         sheet.col(col).width = (len(str(desc[row][col])) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
             wbk.save(excel_name + '.xls')  # 保存Excel
