@@ -7,7 +7,7 @@ import xlwt
 
 class DatebaseXls:
 
-    def dbx_main(self, excel_name, db_name='bxqqedu', tables=None):
+    def dbx_main(self, excel_name, db_name='bxqqedu', tables='all_tables'):
         """
         生成数据库文档-主方法
         :param excel_name: Excel表名称
@@ -25,7 +25,7 @@ class DatebaseXls:
         """
         db = MysqlTools()
         db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
-        if tables is None:  # 判断如果为None则插入所有的数据库表
+        if tables == 'all_tables':  # 判断如果为'all_tables'则插入所有的数据库表
             tables = db.query_table_name(db_name)
         wbk = xlwt.Workbook()  # 实例化一个Excel
         tables_comment = []  # 全部表名
