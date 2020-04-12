@@ -5,9 +5,6 @@ import base64
 import random
 import time
 from flask import Flask, request
-import sys
-import imp
-imp.reload(sys)
 
 app = Flask(__name__)
 
@@ -16,7 +13,8 @@ users = {
 }
 
 def gen_token(uid):
-    token = base64.b64encode(':'.join([str(uid), str(random.random()), str(time.time() + 7200)]))
+    print('')
+    token = base64.b64encode(bytes(':'.join([str(uid), str(random.random()), str(time.time() + 7200)])))
     users[uid].append(token)
     return token
 
@@ -37,8 +35,8 @@ def index():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    print(str(request.headers['Authorization']))
-    uid, pw = str(base64.b64decode(request.headers['Authorization'])).split(' ')[-1].split(':')
+    print(type(base64.b64decode(request.headers['Authorization'].split(' ')[-1])))
+    uid, pw = str(base64.b64decode(request.headers['Authorization'].split(' ')[-1]), encoding='utf-8').split(':', 1)
     if users.get(uid)[0] == pw:
         return gen_token(uid)
     else:
@@ -51,6 +49,11 @@ def test():
         return 'data'
     else:
         return 'error'
+
+@app.route('/', methods=['POST', 'GET'])
+def t():
+    return 'Hello World'
+
 
 if __name__ == '__main__':
     app.run(debug=True)
