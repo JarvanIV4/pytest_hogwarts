@@ -14,7 +14,7 @@ users = {
 
 def gen_token(uid):
     print('')
-    token = base64.b64encode(bytes(':'.join([str(uid), str(random.random()), str(time.time() + 7200)])))
+    token = base64.b64encode(bytes(':'.join([str(uid), str(random.random()), str(time.time() + 7200)]), encoding='utf-8'))
     users[uid].append(token)
     return token
 
