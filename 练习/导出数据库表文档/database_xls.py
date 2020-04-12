@@ -29,7 +29,6 @@ class DatebaseXls:
             tables = db.query_table_name(db_name)
         wbk = xlwt.Workbook()  # 实例化一个Excel
         tables_comment = []  # 全部表名
-        i = 0
         for table_name in tables:
             desc = db.query_table_info(db_name, table_name)     # 查询数据库表名
             columns = ["序号", "列名", "数据类型", "字段类型", "长度", "是否为空", "默认值", "备注"]  # 表头字段
@@ -63,8 +62,7 @@ class DatebaseXls:
                         sheet.col(col).width = (len(str(desc[row][col])) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
             wbk.save(excel_name + '.xls')  # 保存Excel
-            i += 1
-        print("数据库表保存成功，共{}张表".format(i))
+        print("数据库表保存成功，共{}张表".format(len(tables_comment)))
         db.disconnect_db()
 
 
