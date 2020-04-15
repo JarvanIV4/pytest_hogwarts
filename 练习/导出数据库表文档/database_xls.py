@@ -7,6 +7,10 @@ import xlwt
 
 class DatebaseXls:
 
+    def __init__(self):
+        self.db = MysqlTools()
+        self.db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928')
+
     def dbx_main(self, excel_name, db_name='bxqqedu', tables='all_tables'):
         """
         生成数据库文档-主方法
@@ -16,6 +20,12 @@ class DatebaseXls:
         """
         self.db_to_excel(excel_name, db_name, tables)
 
+    def bxqqedu(self, version=''):
+        self.dbx_main(excel_name='智慧校园管理系统-数据库设计文档 V'+version, db_name='bxqqedu')
+
+    def teaching_reform(self, version=''):
+        self.dbx_main(excel_name='教学诊改系统-数据库设计文档 V'+version, db_name='teaching_reform')
+
     def db_to_excel(self, excel_name, db_name, tables):
         """
         查询数据库信息生成Excel
@@ -23,22 +33,20 @@ class DatebaseXls:
         :param db_name: 数据库名称
         :param tables: 需要生成的数据库表名（列表）
         """
-        db = MysqlTools()
-        db.connect_mysql('111.230.139.146', 'bxqqedu', '69eFFF11@b4f4-11e9#a294*0235d2b38928', db_name)
         if tables == 'all_tables':  # 判断如果为'all_tables'则插入所有的数据库表
-            tables = db.query_table_name(db_name)
+            tables = self.db.query_table_name(db_name)
         wbk = xlwt.Workbook()  # 实例化一个Excel
         tables_comment = []  # 全部表名
         for table_name in tables:
-            desc = db.query_table_info(db_name, table_name)     # 查询数据库表名
+            desc = self.db.query_table_info(db_name, table_name)     # 查询数据库表名
             columns = ["序号", "列名", "数据类型", "字段类型", "长度", "是否为空", "默认值", "备注"]  # 表头字段
             sql = "select table_name 表名,table_comment 注释 from information_schema.tables " \
                   "where table_schema='{0}' and table_name='{1}'".format(db_name, table_name)
-            table_comment = (db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
+            table_comment = (self.db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
             if table_comment in tables_comment or table_comment == '':     # 判断如果没有重复表或表名注释不为空就则写入Excel
                 continue
             tables_comment.append(table_comment)
-            sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的第一个sheet
+            sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的sheet页
             # add_sheet方法第二个入参cell_overwrite_ok=True
             # 写入第一行：数据表名+注释
             table_name_style = xlwt.XFStyle()  # 初始化样式
@@ -63,7 +71,7 @@ class DatebaseXls:
                     sheet.write(row+row_num+1, col, desc[row][col], style)
             wbk.save(excel_name + '.xls')  # 保存Excel
         print("数据库表保存成功，共{}张表".format(len(tables_comment)))
-        db.disconnect_db()
+        self.db.disconnect_db()     # 断开数据库连接
 
 
 class MysqlTools:
@@ -169,7 +177,8 @@ class MysqlTools:
 
 if __name__ == '__main__':
     t = DatebaseXls()
-    t.dbx_main('数据库设计文档 V1.0')
+    # t.bxqqedu('1.0.0')      # 智慧校园管理系统
+    t.teaching_reform('1.0.0')  # 教学诊改系统
 
 
 

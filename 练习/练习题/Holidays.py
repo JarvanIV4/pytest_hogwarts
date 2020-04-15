@@ -21,10 +21,10 @@ class HolidaysUpdate:
             req_list.append(req["ccy"])
             req_list.append(date)
             req_dict.append(dict(zip(INPUTARMX1_list, req_list)))
-        print(req_dict)
+        return req_dict
 
 
 if __name__ == '__main__':
     t = HolidaysUpdate()
     req = t.inter("HKD", "2020", "01/20", "2/28", "1/6", "12/6")
-    t.get_req_dict(req)
+    print(t.get_req_dict(req))
