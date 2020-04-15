@@ -21,9 +21,17 @@ class DatebaseXls:
         self.db_to_excel(excel_name, db_name, tables)
 
     def bxqqedu(self, version=''):
+        """
+        智慧校园管理系统-数据库生成方法
+        :param version: 文档版本号
+        """
         self.dbx_main(excel_name='智慧校园管理系统-数据库设计文档 V'+version, db_name='bxqqedu')
 
     def teaching_reform(self, version=''):
+        """
+        教学诊改系统-数据库生成方法
+        :param version: 文档版本号
+        """
         self.dbx_main(excel_name='教学诊改系统-数据库设计文档 V'+version, db_name='teaching_reform')
 
     def db_to_excel(self, excel_name, db_name, tables):
