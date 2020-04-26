@@ -115,7 +115,7 @@ class IndexQuery(InterfaceOps):
         return flag
 
     def index_query_check(self, response):
-        self.connect_gaas_db() # 连接数据库
+        self.connect_gaas_db()  # 连接数据库
         count_flag = self.index_count_check(response)  # 检查接口响应报文.count
         if count_flag:
             status_flag = self.index_status_check(response)  #检查接口响应报文.status
