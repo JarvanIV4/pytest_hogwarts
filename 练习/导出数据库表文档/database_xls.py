@@ -27,24 +27,24 @@ class DatebaseXls:
         """
         self.dbx_main(excel_name='智慧校园管理系统-数据库设计文档 V'+version, db_name='bxqqedu')
 
-    def teaching_reform(self, version=''):
+    def teaching_reform(self, excel_name, talbe_name):
         """
         教学诊改系统-数据库生成方法
         :param version: 文档版本号
         """
-        self.dbx_main(excel_name='教学诊改系统-数据库设计文档 V'+version, db_name='teaching_reform')
+        self.dbx_main(excel_name=excel_name, db_name='teaching_reform', tables=talbe_name)
 
     def db_to_excel(self, excel_name, db_name, tables):
         """
         查询数据库信息生成Excel
         :param excel_name: Excel表名称
         :param db_name: 数据库名称
-        :param tables: 需要生成的数据库表名（列表）
+        :param tables: 需要生成的数据库表名（列表）,支持模糊查询
         """
-        if tables == 'all_tables':  # 判断如果为'all_tables'则插入所有的数据库表
-            tables = self.db.query_table_name(db_name)
+        tables = self.db.query_table_name(db_name, tables)
         wbk = xlwt.Workbook()  # 实例化一个Excel
         tables_comment = []  # 全部表名
+        # print(tables)
         for table_name in tables:
             desc = self.db.query_table_info(db_name, table_name)     # 查询数据库表名
             columns = ["序号", "列名", "数据类型", "字段类型", "长度", "是否为空", "默认值", "备注"]  # 表头字段
@@ -161,19 +161,28 @@ class MysqlTools:
         sql = "SELECT (@rowNum:=@rowNum+1) as 序号,COLUMN_NAME 列名,COLUMN_TYPE 数据类型,DATA_TYPE 字段类型," \
               "CHARACTER_MAXIMUM_LENGTH 长度,IS_NULLABLE 是否为空,COLUMN_DEFAULT 默认值,COLUMN_COMMENT 备注 " \
               "FROM INFORMATION_SCHEMA.COLUMNS,(SELECT @rownum:=0) r " \
-              "WHERE table_schema='{0}' AND table_name='{1}'".format(db_name, table_name)
-        db_desc_result = self.query_sql(sql)
+              "WHERE 1=1 and table_schema='{0}' ".format(db_name)
+        if table_name == 'all_tables':
+            db_desc_result = self.query_sql(sql)
+        elif table_name is not None:
+            sql += "AND table_name='{1}'".format(db_name, table_name)
+            db_desc_result = self.query_sql(sql)
+        else:
+            print('table_name为空')
+            raise
         # print(db_desc_result)
         # print(self.query_count(sql))
         return db_desc_result
 
-    def query_table_name(self, db_name):
+    def query_table_name(self, db_name, table_name):
         """
         查询数据库下所有表名
         :param db_name: 数据库名
         :return: tables_name_list：数据库表名（列表）
         """
-        sql = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE table_schema='%s'" % db_name
+        sql = "SELECT TABLE_NAME FROM information_schema.TABLES " \
+              "WHERE table_schema = '{0}' and TABLE_NAME LIKE '%{1}%'".format(db_name, table_name)
+        print(sql)
         tables_name = self.query_sql(sql)
         tables_count = self.query_count(sql)
         print("{0}数据库中共{1}张表".format(db_name, tables_count))
@@ -186,7 +195,7 @@ class MysqlTools:
 if __name__ == '__main__':
     t = DatebaseXls()
     # t.bxqqedu('1.0.0')      # 智慧校园管理系统
-    t.teaching_reform('1.0.0')  # 教学诊改系统
+    t.teaching_reform('教学诊改系统-教师管理', 'tr_teacher')  # 教学诊改系统-教师管理
 
 
 
