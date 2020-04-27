@@ -51,9 +51,15 @@ class DatebaseXls:
             sql = "select table_name 表名,table_comment 注释 from information_schema.tables " \
                   "where table_schema='{0}' and table_name='{1}'".format(db_name, table_name)
             table_comment = (self.db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
-            if table_comment in tables_comment or table_comment == '':     # 判断如果没有重复表或表名注释不为空就则写入Excel
+            if table_comment in tables_comment:     # 判断如果没有重复表或表名注释不为空就则写入Excel
                 continue
+            if len(table_name) > 32:
+                table_name = table_name.split('_')[-1]
+            if table_comment == '':
+                table_comment = table_name
+                print(table_comment + " 表名无注释")
             tables_comment.append(table_comment)
+
             sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的sheet页
             # add_sheet方法第二个入参cell_overwrite_ok=True
             # 写入第一行：数据表名+注释
@@ -77,7 +83,7 @@ class DatebaseXls:
                         # print(desc[row][col])
                         sheet.col(col).width = (len(str(desc[row][col])) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
-            wbk.save(excel_name + '.xls')  # 保存Excel
+        wbk.save(excel_name + '(' + str(len(tables_comment)) + '张表).xls')  # 保存Excel
         print("数据库表保存成功，共{}张表".format(len(tables_comment)))
         self.db.disconnect_db()     # 断开数据库连接
 
@@ -185,7 +191,7 @@ class MysqlTools:
         print(sql)
         tables_name = self.query_sql(sql)
         tables_count = self.query_count(sql)
-        print("{0}数据库中共{1}张表".format(db_name, tables_count))
+        print("查询{0}数据库中的{1}张表".format(db_name, tables_count))
         tables_name_list = []
         for table in tables_name:
             tables_name_list.append(table[0])
