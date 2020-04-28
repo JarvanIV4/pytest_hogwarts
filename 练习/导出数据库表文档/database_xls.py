@@ -27,7 +27,7 @@ class DatebaseXls:
         """
         self.dbx_main(excel_name='智慧校园管理系统-数据库设计文档 V'+version, db_name='bxqqedu')
 
-    def teaching_reform(self, excel_name, talbe_name):
+    def teaching_reform(self, excel_name, talbe_name='all_tables'):
         """
         教学诊改系统-数据库生成方法
         :param version: 文档版本号
@@ -59,7 +59,6 @@ class DatebaseXls:
                 table_comment = table_name
                 print(table_comment + " 表名无注释")
             tables_comment.append(table_comment)
-
             sheet = wbk.add_sheet('{}'.format(table_comment))  # 添加该Excel的sheet页
             # add_sheet方法第二个入参cell_overwrite_ok=True
             # 写入第一行：数据表名+注释
@@ -84,7 +83,7 @@ class DatebaseXls:
                         sheet.col(col).width = (len(str(desc[row][col])) * 367)
                     sheet.write(row+row_num+1, col, desc[row][col], style)
         wbk.save(excel_name + '(' + str(len(tables_comment)) + '张表).xls')  # 保存Excel
-        print("数据库表保存成功，共{}张表".format(len(tables_comment)))
+        print("保存成功，共保存{0}张表".format(len(tables_comment)))
         self.db.disconnect_db()     # 断开数据库连接
 
 
@@ -171,7 +170,7 @@ class MysqlTools:
         if table_name == 'all_tables':
             db_desc_result = self.query_sql(sql)
         elif table_name is not None:
-            sql += "AND table_name='{1}'".format(db_name, table_name)
+            sql += "AND table_name='{0}'".format(table_name)
             db_desc_result = self.query_sql(sql)
         else:
             print('table_name为空')
@@ -187,7 +186,9 @@ class MysqlTools:
         :return: tables_name_list：数据库表名（列表）
         """
         sql = "SELECT TABLE_NAME FROM information_schema.TABLES " \
-              "WHERE table_schema = '{0}' and TABLE_NAME LIKE '%{1}%'".format(db_name, table_name)
+              "WHERE 1=1 and table_schema = '{0}' ".format(db_name)
+        if table_name != 'all_tables':
+            sql += "and TABLE_NAME LIKE '%{0}%'".format(table_name)
         print(sql)
         tables_name = self.query_sql(sql)
         tables_count = self.query_count(sql)
@@ -201,7 +202,8 @@ class MysqlTools:
 if __name__ == '__main__':
     t = DatebaseXls()
     # t.bxqqedu('1.0.0')      # 智慧校园管理系统
-    t.teaching_reform('教学诊改系统-教师管理', 'tr_teacher')  # 教学诊改系统-教师管理
+    t.teaching_reform('教学诊改系统')  # 教学诊改系统-全部数据库表
+    # t.teaching_reform('教学诊改系统-教师管理', 'tr_teacher')  # 教学诊改系统-教师管理
 
 
 
