@@ -53,8 +53,8 @@ class DatebaseXls:
             table_comment = (self.db.query_sql(sql, 'dict'))[0]['注释']  # 查询数据库表名及注释
             if table_comment in tables_comment:     # 判断如果没有重复表或表名注释不为空就则写入Excel
                 continue
-            if len(table_name) > 32:
-                table_name = table_name.split('_')[-1]
+            # if len(table_name) > 32:      数据库名称长度超长时应做处理，否则保存到Excel表时会报错
+            #     table_name = table_name.split('_')[-1]
             if table_comment == '':
                 table_comment = table_name
                 print(table_comment + " 表名无注释")
@@ -202,8 +202,8 @@ class MysqlTools:
 if __name__ == '__main__':
     t = DatebaseXls()
     # t.bxqqedu('1.0.0')      # 智慧校园管理系统
-    t.teaching_reform('教学诊改系统')  # 教学诊改系统-全部数据库表
-    # t.teaching_reform('教学诊改系统-教师管理', 'tr_teacher')  # 教学诊改系统-教师管理
+    # t.teaching_reform('教学诊改系统')  # 教学诊改系统-全部数据库表
+    t.teaching_reform('教学诊改系统-教师管理', 'tr_teacher')  # 教学诊改系统-教师管理
 
 
 
