@@ -1,0 +1,7 @@
+pip国内下载链接
+清华大学：https://pypi.tuna.tsinghua.edu.cn/simple
+百度 ：https://mirror.baidu.com/pypi/simple/
+豆瓣： http://pypi.douban.com/simple
+http://e.pypi.python.org
+
+--default-timeout=100 -i https://pypi.tuna.tsinghua.edu.cn/simple
