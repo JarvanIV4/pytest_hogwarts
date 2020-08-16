@@ -5,3 +5,9 @@ pip国内下载链接
 http://e.pypi.python.org
 
 --default-timeout=100 -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+升级pip工具：
+python -m pip install -U pip
+python -m pip install --upgrade pip
+python -m pip install -U --force-reinstall
+pip install --user --upgrade pip
