@@ -25,5 +25,5 @@ def ZIPData(resources_dir, zip_name):
 
 
 if __name__ == '__main__':
-    resources_dir = r"D:\Program Data\python_work\python_practice\Python基础\python基础知识\文件处理\resources"
+    resources_dir = r"/练习/Python基础/python基础知识/文件处理/resources"
     ZIPData(resources_dir)

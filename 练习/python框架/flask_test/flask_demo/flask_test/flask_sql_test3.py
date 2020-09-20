@@ -2,7 +2,7 @@
 # @Time : 2020/02/29
 # @Author : Wind
 
-from python框架.flask_test.flask_demo.flask_SQLalchemy_demo import *
+from 练习.python框架.flask_test.flask_demo.flask_SQLalchemy_demo import *
 
 role = Role(name='admin')
 db.session.add(role)

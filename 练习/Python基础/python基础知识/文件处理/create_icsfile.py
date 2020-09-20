@@ -15,10 +15,10 @@ class CreateICSFile:
         self.filename = self.username + self.num
         self.filename_hwics = self.filename + ".hwics"
         self.hwics_path = "./hwics资料包" + self.filename_hwics
-        self.resources_dir = r".\resources资料包"
+        self.resources_dir = r"resources资料包"
         self.zip_path = r".\zip资料包\\" + self.filename + ".zip"
-        self.profilexml_path = "./profile.xml"
-        self.information_path = "./resources资料包/resources/information"
+        self.profilexml_path = "profile.xml"
+        self.information_path = "resources资料包/resources/information"
 
     def create_file_main(self, file_format=None, times=1):
         """
@@ -90,10 +90,10 @@ class CreateICSFile:
         dest_hwics = r".\hwics资料包\\" + self.filename_hwics
         if os.path.exists(dest_hwics):
             os.unlink(dest_hwics)
-        shutil.move("./" + self.filename_hwics, ".\hwics资料包")    # 移动资料包到“hwics资料包”这个目录下
+        shutil.move("./" + self.filename_hwics, "hwics资料包")    # 移动资料包到“hwics资料包”这个目录下
 
     def hwics_to_zip(self):
-        path = "./zip资料包临时文件夹"
+        path = "zip资料包临时文件夹"
         dir_name = path + "/" + self.filename
         if os.path.exists(dir_name):
             shutil.rmtree(dir_name)
