@@ -20,6 +20,5 @@ class run_test:
     def setup(self):
         self.a = Add()
 
-    def
-
+    def teardown(self):
         print(self.test_add(1, 2))
