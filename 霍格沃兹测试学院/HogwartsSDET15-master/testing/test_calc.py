@@ -3,7 +3,6 @@
 import pytest
 import yaml
 
-
 # 解析测试数据文件
 def get_datas():
     with open("./datas/calc.yml", encoding='utf-8') as f:
