@@ -18,4 +18,5 @@ class Testdemo():
 
     def test_testdemo(self):
         self.driver.get("http://ceshiren.com")
+        self.driver.find_element_by_xpath()
         sleep(3)
